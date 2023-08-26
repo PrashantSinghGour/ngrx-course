@@ -56,10 +56,21 @@ const routes: Routes = [
     MatToolbarModule,
     AuthModule.forRoot(),
     StoreModule.forRoot(reducers, {
-      metaReducers
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+        strictActionSerializability: true,
+        strictStateSerializability: true
+      }
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    // to enable time travel debugging
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router', // key on which routerState will be stored.
+      routerState: RouterState.Minimal // format for routerState
+    })
   ],
   bootstrap: [AppComponent]
 })
